@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color: #ffffff;
+  --text-color: #222;
+  --primary-color: #3498db;
+}
+
+[data-theme="dark"] {
+  --background-color: #222;
+  --text-color: #ffffff;
+  --primary-color: #2980b9;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Usa las variables en otros estilos según sea necesario */
+.button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
