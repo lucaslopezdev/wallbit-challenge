@@ -23,7 +23,9 @@ export const Button = ({
     <button
       disabled={isDisabled}
       onClick={onClick}
-      className={`border px-4 py-2 rounded-md w-fit ${className}`}
+      className={`border px-4 py-2 rounded-md w-fit
+        ${isDisabled ? '' : 'hover:scale-[1.03] transition-all duration-100'}
+        ${className}`}
       style={{
         color: isDisabled ? 'gray' : color,
         borderColor: isDisabled ? 'gray' : color,

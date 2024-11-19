@@ -1,5 +1,4 @@
 import useProducts from '@hooks/useProducts'
-import useCart from '@/hooks/useCart'
 import { useEffect } from 'react'
 import { Button } from '../common/Button'
 import StarRating from './StarRating'
@@ -12,10 +11,11 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel'
 import { useState } from 'react'
+import { useCartContext } from '@/contexts/CartContext'
 
 const ProductsLists = () => {
   const { products, loading, getProducts } = useProducts()
-  const { loading: loadingCart, addToCart } = useCart()
+  const { loading: loadingCart, addToCart } = useCartContext()
   const [api, setApi] = useState<CarouselApi>()
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const ProductsLists = () => {
                       ${price.toFixed(2)}
                     </p>
                     <Button
-                      className="w-full mt-4"
+                      className="w-full mt-4 hover:bg-gray-400/30 transition-all duration-100"
                       disabled={() => loadingCart}
                       onClick={() =>
                         addToCart({ productId: id.toString(), quantity: '1' })
@@ -86,8 +86,8 @@ const ProductsLists = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious onClick={() => scrollPrev()} />
-        <CarouselNext onClick={() => scrollNext()} />
+        <CarouselPrevious className="text-black" onClick={() => scrollPrev()} />
+        <CarouselNext className="text-black" onClick={() => scrollNext()} />
       </Carousel>
     </section>
   )
