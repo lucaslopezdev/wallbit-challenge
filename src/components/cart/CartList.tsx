@@ -42,7 +42,7 @@ export const CartList = ({
 
       <article className="max-h-[500px] overflow-auto ">
         <table className="w-full">
-          <thead className="h-10 [&>th]:font-semibold [&>th]:px-2 text-sm">
+          <thead className="h-10 bg-[var(--background-color)] [&>th]:font-semibold sticky top-0 [&>th]:px-2 text-sm">
             <th>Cantidad</th>
             <th className="text-start">Nombre</th>
             <th>Precio Unidad</th>
