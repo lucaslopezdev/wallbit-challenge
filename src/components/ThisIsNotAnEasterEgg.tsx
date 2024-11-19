@@ -1,86 +1,85 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react'
 
-const EASTER_EGG_CODE = [84, 85, 75, 73]; // TUKI
+const EASTER_EGG_CODE = [84, 85, 75, 73] // TUKI
 
-const tukis: string[] = [
-  '/tuki.webp',
-  '/angry-tuki.webp'
-];
+const tukis: string[] = ['/tuki.webp', '/angry-tuki.webp']
 
 interface TukiImage {
-  id: number;
-  src: string;
-  position: number;
-  show: boolean;
+  id: number
+  src: string
+  position: number
+  show: boolean
 }
 
 export default function EasterEgg() {
-  const [inputSequence, setInputSequence] = useState<number[]>([]);
-  const [tukiImages, setTukiImages] = useState<TukiImage[]>([]);
+  const [inputSequence, setInputSequence] = useState<number[]>([])
+  const [tukiImages, setTukiImages] = useState<TukiImage[]>([])
 
   const addNewTuki = useCallback(() => {
     const newTuki: TukiImage = {
       id: Date.now(),
       src: tukis[Math.floor(Math.random() * tukis.length)],
       position: Math.floor(Math.random() * 80),
-      show: false
-    };
+      show: false,
+    }
 
-    setTukiImages(prevTukis => [...prevTukis, newTuki]);
+    setTukiImages((prevTukis) => [...prevTukis, newTuki])
 
     // Trigger the enter animation
     setTimeout(() => {
-      setTukiImages(prevTukis => 
-        prevTukis.map(tuki => 
+      setTukiImages((prevTukis) =>
+        prevTukis.map((tuki) =>
           tuki.id === newTuki.id ? { ...tuki, show: true } : tuki
         )
-      );
-    }, 50);
+      )
+    }, 50)
 
     // Start the exit animation
     setTimeout(() => {
-      setTukiImages(prevTukis => 
-        prevTukis.map(tuki => 
+      setTukiImages((prevTukis) =>
+        prevTukis.map((tuki) =>
           tuki.id === newTuki.id ? { ...tuki, show: false } : tuki
         )
-      );
-    }, 1500);
+      )
+    }, 1500)
 
     // Remove the tuki after the exit animation
     setTimeout(() => {
-      setTukiImages(prevTukis => prevTukis.filter(tuki => tuki.id !== newTuki.id));
-    }, 3000);
-  }, []);
+      setTukiImages((prevTukis) =>
+        prevTukis.filter((tuki) => tuki.id !== newTuki.id)
+      )
+    }, 3000)
+  }, [])
 
   useEffect(() => {
     const checkEasterEgg = (event: KeyboardEvent) => {
-      setInputSequence(prev => {
-        const newSequence = [...prev, event.keyCode];
+      setInputSequence((prev) => {
+        const newSequence = [...prev, event.keyCode]
         if (newSequence.length > EASTER_EGG_CODE.length) {
-          newSequence.shift();
+          newSequence.shift()
         }
-        return newSequence;
-      });
-    };
+        return newSequence
+      })
+    }
 
-    document.addEventListener('keydown', checkEasterEgg);
+    document.addEventListener('keydown', checkEasterEgg)
 
     return () => {
-      document.removeEventListener('keydown', checkEasterEgg);
-    };
-  }, []);
+      document.removeEventListener('keydown', checkEasterEgg)
+    }
+  }, [])
 
   useEffect(() => {
     if (inputSequence.toString() === EASTER_EGG_CODE.toString()) {
-      addNewTuki();
-      setInputSequence([]);
+      addNewTuki()
+      setInputSequence([])
     }
-  }, [inputSequence, addNewTuki]);
+  }, [inputSequence, addNewTuki])
 
   return (
     <>
       {tukiImages.map((tuki) => (
-        <div 
+        <div
           key={tuki.id}
           style={{
             position: 'fixed',
@@ -104,5 +103,5 @@ export default function EasterEgg() {
         </div>
       ))}
     </>
-  );
+  )
 }

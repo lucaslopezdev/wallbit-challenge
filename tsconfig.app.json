@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "ES2020",
+    "target": "ESNext",
     "types": ["node"],
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -25,11 +25,19 @@
 
     "baseUrl": ".",
     "paths": {
+      "@/*": ["./src/*"],
       "@components/*": ["src/components/*"],
       "@contexts/*": ["src/contexts/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@types/*": ["src/types/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
     }
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.js"
+  ]
 }
