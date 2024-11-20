@@ -98,9 +98,13 @@ function useCart() {
     })
   }
 
-  function removeFromCart(id: number) {
+  function removeFromCart(id: number, quantity: number, title: string) {
     const newCart = cartItems.filter((item) => item.id !== id)
     setCartItems(newCart)
+    toast.error({
+      text: 'Removed from Cart',
+      description: `${quantity} ${title}`,
+    })
   }
 
   function clearCart() {

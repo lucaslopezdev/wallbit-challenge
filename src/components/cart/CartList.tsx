@@ -9,7 +9,7 @@ import { toast } from '@pheralb/toast'
 interface Props {
   cartItems: CartItem[]
   startedAt: string
-  removeFromCart: (id: number) => void
+  removeFromCart: (id: number, quantity: number, title: string) => void
   clearCart: () => void
   updateQuantity: (id: number, quantity: number) => void
 }
@@ -199,7 +199,7 @@ export const CartList = ({
                     </a>
                   </td>
                   <td>
-                    <button onClick={() => removeFromCart(id)}>
+                    <button onClick={() => removeFromCart(id, quantity, title)}>
                       <MdDelete
                         className="text-negative rounded-md hover:scale-110 transition-all duration-150"
                         size={20}
