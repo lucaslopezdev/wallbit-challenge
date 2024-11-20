@@ -252,7 +252,8 @@ export const CartList = ({
           {discount ? (
             <div className="flex justify-between gap-2 items-end">
               <span className="text-sm font-bold text-green-600">
-                ${(Number(totalPrice.toFixed(2)) * discount) / 100}
+                - $
+                {((Number(totalPrice.toFixed(2)) * discount) / 100).toFixed(2)}
               </span>
               <h5 className="text-xl text-right font-semibold">
                 Total: $
