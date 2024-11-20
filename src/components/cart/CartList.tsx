@@ -112,7 +112,7 @@ export const CartList = ({
       lightbox.init()
     }
     init()
-  }, [])
+  }, [cartItems])
 
   if (!cartItems.length) {
     return (
@@ -133,7 +133,7 @@ export const CartList = ({
 
   return (
     <>
-      <div className=" flex justify-between">
+      <div className=" flex items-center justify-between">
         <h3 className="my-3">
           Carrito de compra{' '}
           <span>{cartItems.length ? `- Iniciado ${startedAt}` : ''}</span>
