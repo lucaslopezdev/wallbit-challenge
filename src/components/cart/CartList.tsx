@@ -1,8 +1,10 @@
 import { Button } from '@components/common/Button'
 import { CartItem } from '../../types/cart'
 import { MdDelete, MdRemove, MdAdd } from 'react-icons/md'
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import 'photoswipe/style.css'
+import { Discounts, CART_DISCOUNT, CART_CODE } from '@/utils/const'
+import { toast } from '@pheralb/toast'
 
 interface Props {
   cartItems: CartItem[]
@@ -24,9 +26,52 @@ export const CartList = ({
   updateQuantity,
 }: Props) => {
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions>({})
+  const [code, setCode] = useState(() => {
+    const storagedCode = localStorage.getItem(CART_CODE)
+    return storagedCode ? JSON.parse(storagedCode) : ''
+  })
+  const [discount, setDiscount] = useState(() => {
+    const storagedDiscount = localStorage.getItem(CART_DISCOUNT)
+    return storagedDiscount ? JSON.parse(storagedDiscount) : 0
+  })
 
   const totalItems = cartItems.reduce((acc, cur) => cur.quantity + acc, 0)
   const totalPrice = cartItems.reduce((acc, cur) => cur.totalPrice + acc, 0)
+
+  const handleCode = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (Object.keys(Discounts).includes(code)) {
+      setDiscount(Discounts[code])
+      localStorage.setItem(CART_CODE, JSON.stringify(code))
+    } else {
+      toast.error({
+        text: 'Invalid Code!',
+        description:
+          'The code you entered does not exist or is no longer available',
+      })
+      setCode('')
+    }
+  }
+
+  const codeValidate = () => {
+    return code ? false : true
+  }
+
+  const removeCode = () => {
+    setCode('')
+    setDiscount(0)
+  }
+
+  useEffect(() => {
+    localStorage.setItem(CART_DISCOUNT, JSON.stringify(discount))
+    localStorage.setItem(CART_CODE, JSON.stringify(code))
+    if (discount > 0) {
+      toast.success({
+        text: 'Discount Applied!',
+        description: `You got a ${discount}% discount`,
+      })
+    }
+  }, [discount])
 
   useEffect(() => {
     const loadImageDimensions = async () => {
@@ -74,16 +119,26 @@ export const CartList = ({
           No hay productos en el carro aun, prueba agregando arriba con su id y
           la cantidad que deseas ingresar
         </p>
+        <img
+          src="cart-empty.webp"
+          alt="Carrito vacio"
+          className="mx-auto size-40"
+        />
       </>
     )
   }
 
   return (
     <>
-      <h3 className="my-3">
-        Carrito de compra{' '}
-        <span>{cartItems.length ? `- Iniciado ${startedAt}` : ''}</span>
-      </h3>
+      <div className=" flex justify-between">
+        <h3 className="my-3">
+          Carrito de compra{' '}
+          <span>{cartItems.length ? `- Iniciado ${startedAt}` : ''}</span>
+        </h3>
+        <Button color="#d22e2f" onClick={clearCart}>
+          Limpiar Carrito
+        </Button>
+      </div>
 
       <article className="max-h-[500px] overflow-auto">
         <table className="w-full">
@@ -156,14 +211,56 @@ export const CartList = ({
       </article>
       <div className="flex justify-between items-center mt-5">
         <div>
-          <h5 className="text-xl font-semibold">
-            Total: ${totalPrice.toFixed(2)}
-          </h5>
+          <form onSubmit={handleCode} className="flex gap-3">
+            <input
+              type="text"
+              className="px-4 py-2 border rounded-md w-32"
+              value={code}
+              onChange={(event) => setCode(event.target.value)}
+              name="quantity"
+              readOnly={discount}
+              max={999}
+              min={1}
+              id="quantity"
+              placeholder="Código"
+            />
+            {discount ? (
+              <Button color="#d22e2f" onClick={removeCode}>
+                Eliminar código
+              </Button>
+            ) : (
+              <Button disabled={codeValidate} color="#0d99ff">
+                Aplicar código
+              </Button>
+            )}
+          </form>
+        </div>
+        <div>
+          <div className="flex justify-between gap-2 items-end">
+            <span className="text-sm font-bold text-green-600">
+              {discount ? `${discount + '% OFF'}` : ''}
+            </span>
+            <h5
+              className={`text-xl text-right font-semibold ${discount ? 'line-through text-neutral-500 opacity-50' : ''}`}
+            >
+              Total: ${totalPrice.toFixed(2)}
+            </h5>
+          </div>
+          {discount ? (
+            <div className="flex justify-between gap-2 items-end">
+              <span className="text-sm font-bold text-green-600">
+                ${(Number(totalPrice.toFixed(2)) * discount) / 100}
+              </span>
+              <h5 className="text-xl text-right font-semibold">
+                Total: $
+                {(totalPrice - (totalPrice * discount) / 100).toFixed(2)}
+              </h5>
+            </div>
+          ) : (
+            ''
+          )}
           <span>Cantidad de productos: {totalItems}</span>
         </div>
-        <Button color="#d22e2f" onClick={clearCart}>
-          Limpiar Carrito
-        </Button>
       </div>
     </>
   )

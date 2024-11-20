@@ -35,7 +35,13 @@ const ProductsLists = () => {
   }
 
   if (loading) {
-    return <div className="text-center py-44">Cargando productos...</div>
+    return (
+      <section className="my-5">
+        <h3 className="text-xl mb-3 font-semibold">Todos los productos</h3>
+
+        <div className="text-center py-32">Cargando productos...</div>
+      </section>
+    )
   }
 
   return (

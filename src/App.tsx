@@ -7,12 +7,15 @@ import { CartProvider } from './contexts/CartContext.tsx'
 
 const App: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen container max-w-5xl mx-auto px-2">
       <Header />
-      <main className="container max-w-5xl mx-auto px-2">
+      <main>
         <CartProvider>
           <Cart />
-          <p title="Type 'tuki'" className="opacity-50 text-sm pt-2 pl-1">
+          <p
+            title="Discount Code: tuki"
+            className="opacity-50 text-sm pt-2 pl-1"
+          >
             Hover me
           </p>
           <ProductsLists />

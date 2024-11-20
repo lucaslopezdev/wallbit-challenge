@@ -4,11 +4,9 @@ Creía que El Topo era una tienda pensada para programadores que necesiten añad
 
 ![tu-eres-el-topo](/public/tu-eres-el-topo.webp)
 
-## 🌄 Imagenes ilustrativas
+## 🌄 Imagen ilustrativa
 
 ![light-mode](/public/light-demo.webp)
-
-![dark-mode](/public/dark-demo.webp)
 
 ## 🌟 Características
 

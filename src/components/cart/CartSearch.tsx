@@ -19,7 +19,7 @@ export const CartSearch = ({ onSubmit, loading }: Props) => {
   }
 
   function validateForm() {
-    return !Number(formData.productId) || !Number(formData.quantity)
+    return Number(formData.productId) < 1 || Number(formData.quantity) < 1
       ? true
       : false
   }
