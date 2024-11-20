@@ -14,6 +14,8 @@ interface Props {
   updateQuantity: (id: number, quantity: number) => void
 }
 
+type DiscountCode = keyof typeof Discounts
+
 interface ImageDimensions {
   [key: string]: { width: number; height: number }
 }
@@ -26,7 +28,7 @@ export const CartList = ({
   updateQuantity,
 }: Props) => {
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions>({})
-  const [code, setCode] = useState(() => {
+  const [code, setCode] = useState<DiscountCode | ''>(() => {
     const storagedCode = localStorage.getItem(CART_CODE)
     return storagedCode ? JSON.parse(storagedCode) : ''
   })
@@ -40,7 +42,8 @@ export const CartList = ({
 
   const handleCode = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (Object.keys(Discounts).includes(code)) {
+
+    if (code !== '' && Object.keys(Discounts).includes(code)) {
       setDiscount(Discounts[code])
       localStorage.setItem(CART_CODE, JSON.stringify(code))
     } else {
@@ -216,7 +219,7 @@ export const CartList = ({
               type="text"
               className="px-4 py-2 border rounded-md w-32"
               value={code}
-              onChange={(event) => setCode(event.target.value)}
+              onChange={(event) => setCode(event.target.value as DiscountCode)}
               name="quantity"
               readOnly={discount}
               max={999}
